@@ -1,5 +1,7 @@
 package myproject.com.myapplication;
 
+import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +26,12 @@ public class MainActivity extends AppCompatActivity {
         initData();
         RecyclerViewAdapter adapter=new RecyclerViewAdapter(datas);
         recyclerView.setAdapter(adapter);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(new Intent(MainActivity.this , SubActivity.class));
+            }
+        } , 2000);
     }
 
     public void initData(){
