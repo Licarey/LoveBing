@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".SubActivity"/>
+        <activity android:name=".TouchActivity"/>
     </application>
 
 </manifest>

@@ -4,14 +4,9 @@ import android.animation.Animator;
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewCompat;
-import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewPropertyAnimator;
-import android.view.animation.Interpolator;
-
-import java.util.logging.Logger;
 
 /**
  * Created by apple on 17-7-1.
