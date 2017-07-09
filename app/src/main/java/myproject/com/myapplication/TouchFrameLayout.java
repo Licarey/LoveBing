@@ -7,17 +7,21 @@ import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import java.util.logging.Logger;
+
 /**
  * Created by apple on 17-7-8.
  */
 
 public class TouchFrameLayout extends FrameLayout {
+    private float offest = 0.1f;
     private Context context;
     private GestureDetectorCompat gestureDetector;
     private ViewDragHelper dragHelper;
@@ -119,8 +123,8 @@ public class TouchFrameLayout extends FrameLayout {
                 // 加速度向上
                 close();
             } else if (releasedChild == layoutContent
-                    && distanceTop > verticalRange * 0.1) {
-                // 如果释放时，手指在内容区且内容区离左边的距离是range * 0.1
+                    && distanceTop > verticalRange * offest) {
+                // 如果释放时，手指在内容区且内容区离左边的距离是range * offest
                 open();
             } else {
                 close();
@@ -145,15 +149,33 @@ public class TouchFrameLayout extends FrameLayout {
         }
     };
 
+    /**
+     * 恢复打开状态
+     */
+    public void setOpenStatus(){
+        verticalRange = getVerticalRange();
+        distanceTop = getVerticalRange();
+        viewWidth = getViewWidth();
+        viewHeight = getViewHeight();
+        if (distanceTop < 0) {
+            distanceTop = 0;
+        } else if (distanceTop > verticalRange) {
+            distanceTop = verticalRange;
+        }
+        layoutMenu.layout(0, 0, viewWidth , viewHeight);
+        layoutContent.layout(0, distanceTop, viewWidth, distanceTop
+                + viewHeight);
+    }
+
     public interface DragListener {
         /** 已经打开 */
-        public void onOpen();
+        void onOpen();
 
         /** 已经关闭 */
-        public void onClose();
+        void onClose();
 
         /** 真在拖拽 */
-        public void onDrag(float percent);
+        void onDrag(float percent);
     }
 
     public void setDragListener(DragListener dragListener) {
@@ -174,7 +196,19 @@ public class TouchFrameLayout extends FrameLayout {
         super.onSizeChanged(w, h, oldw, oldh);
         viewWidth = layoutMenu.getMeasuredWidth();
         viewHeight = layoutMenu.getMeasuredHeight();
-        verticalRange = (int) (viewHeight * 0.1);
+        verticalRange = (int) (viewHeight * offest);
+    }
+
+    public int getViewHeight(){
+        return viewHeight;
+    }
+
+    public int getVerticalRange(){
+        return verticalRange;
+    }
+
+    public int getViewWidth(){
+        return viewWidth;
     }
 
     @Override
@@ -240,23 +274,6 @@ public class TouchFrameLayout extends FrameLayout {
         } else if (lastStatus != getStatus() && status == Status.Open) {
             dragListener.onOpen();
         }
-    }
-
-    private Integer evaluate(float fraction, Object startValue, Integer endValue) {
-        int startInt = (Integer) startValue;
-        int startA = (startInt >> 24) & 0xff;
-        int startR = (startInt >> 16) & 0xff;
-        int startG = (startInt >> 8) & 0xff;
-        int startB = startInt & 0xff;
-        int endInt = (Integer) endValue;
-        int endA = (endInt >> 24) & 0xff;
-        int endR = (endInt >> 16) & 0xff;
-        int endG = (endInt >> 8) & 0xff;
-        int endB = endInt & 0xff;
-        return (int) ((startA + (int) (fraction * (endA - startA))) << 24)
-                | (int) ((startR + (int) (fraction * (endR - startR))) << 16)
-                | (int) ((startG + (int) (fraction * (endG - startG))) << 8)
-                | (int) ((startB + (int) (fraction * (endB - startB))));
     }
 
     @Override
