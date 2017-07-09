@@ -11,18 +11,13 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.ViewConfiguration;
 import android.view.ViewTreeObserver;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by apple on 17-7-5.
@@ -32,7 +27,7 @@ public class TouchActivity extends Activity implements AppBarLayout.OnOffsetChan
     private TouchFrameLayout touchFrameLayout;
     private AppBarLayout appBarLayout;
     private NestedScrollView nsv;
-    private RecyclerView recyclerView;
+    private View bottomview , topview;
     private View containerView , body;
     private List<String> datas;
     private boolean forbidAppBarScroll;
@@ -48,11 +43,8 @@ public class TouchActivity extends Activity implements AppBarLayout.OnOffsetChan
         containerView = findViewById(R.id.containerView);
         touchFrameLayout.setOrientation(TouchFrameLayout.Orientation.Vertical);
 
-        recyclerView = (RecyclerView) findViewById(R.id.rv);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this , LinearLayoutManager.VERTICAL , false));
-        initData();
-        TouchActivity.RecyclerViewAdapter adapter=new TouchActivity.RecyclerViewAdapter(datas);
-        recyclerView.setAdapter(adapter);
+        bottomview = findViewById(R.id.bottom);
+        topview = findViewById(R.id.topview);
         touchFrameLayout.setDragListener(this);
     }
 
@@ -77,13 +69,6 @@ public class TouchActivity extends Activity implements AppBarLayout.OnOffsetChan
         }
     }
 
-    public void initData(){
-        datas = new ArrayList<String>();
-        for(int i =0;i<17;i++){
-            datas.add("item "+i);
-        }
-    }
-
     @Override
     public void onOpen() {
         forbidAppBarScroll(true);
@@ -97,10 +82,11 @@ public class TouchActivity extends Activity implements AppBarLayout.OnOffsetChan
     @Override
     public void onDrag(float percent) {
         float f1 = 1 - percent * 0.1f;
-        body.setScaleX(f1);
+        appBarLayout.setScaleX(f1);
+        topview.setScaleX(f1);
         body.setScaleY(f1);
-        nsv.setAlpha(1 - percent);
-        nsv.setTranslationY(body.getHeight() * (percent / 30));
+        bottomview.setAlpha(1 - percent* 1.11f * 1.12f);
+        bottomview.setTranslationY(body.getHeight() * (percent / 60));
         touchFrameLayout.getBackground().setColorFilter(
                 evaluate(percent, Color.TRANSPARENT, Color.GRAY),
                 PorterDuff.Mode.SRC_OVER);
@@ -112,59 +98,16 @@ public class TouchActivity extends Activity implements AppBarLayout.OnOffsetChan
         int startR = (startInt >> 16) & 0xff;
         int startG = (startInt >> 8) & 0xff;
         int startB = startInt & 0xff;
-        int endInt = (Integer) endValue;
+        int endInt = endValue;
         int endA = (endInt >> 24) & 0xff;
         int endR = (endInt >> 16) & 0xff;
         int endG = (endInt >> 8) & 0xff;
         int endB = endInt & 0xff;
-        return (int) ((startA + (int) (fraction * (endA - startA))) << 24)
-                | (int) ((startR + (int) (fraction * (endR - startR))) << 16)
-                | (int) ((startG + (int) (fraction * (endG - startG))) << 8)
-                | (int) ((startB + (int) (fraction * (endB - startB))));
+        return ((startA + (int) (fraction * (endA - startA))) << 24)
+                | ((startR + (int) (fraction * (endR - startR))) << 16)
+                | ((startG + (int) (fraction * (endG - startG))) << 8)
+                | ((startB + (int) (fraction * (endB - startB))));
     }
-
-    public class RecyclerViewAdapter extends RecyclerView.Adapter<TouchActivity.RecyclerViewAdapter.ViewHolder> {
-
-        private List<String> datas;
-
-        public RecyclerViewAdapter(List<String> datas) {
-            this.datas = datas;
-        }
-
-        @Override
-        public TouchActivity.RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_item, parent, false);
-            TouchActivity.RecyclerViewAdapter.ViewHolder vh = new TouchActivity.RecyclerViewAdapter.ViewHolder(v);
-            return vh;
-        }
-
-        @Override
-        public void onBindViewHolder(TouchActivity.RecyclerViewAdapter.ViewHolder holder, int position) {
-            holder.item.setTag(position);
-            holder.tv.setText(datas.get(position));
-        }
-
-        class ViewHolder extends RecyclerView.ViewHolder {
-            public View item;
-            public TextView tv;
-
-            public ViewHolder(View view) {
-                super(view);
-                item = view;
-                tv = (TextView) view.findViewById(R.id.text);
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return datas.size();
-        }
-
-    }
-
-
-
-
 
     private void forbidAppBarScroll(boolean forbid) {
         if (forbid == forbidAppBarScroll) {
