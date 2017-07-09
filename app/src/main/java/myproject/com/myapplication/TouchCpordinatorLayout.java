@@ -52,14 +52,17 @@ public class TouchCpordinatorLayout extends CoordinatorLayout {
         return super.onInterceptTouchEvent(ev);
     }
 
+    private boolean isMove = false;
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         int action = ev.getAction();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 startY = ev.getY();
+                isMove = false;
                 break;
             case MotionEvent.ACTION_MOVE:
+                isMove = true;
                 if (ev.getY() - startY >= 0 && isOpened) {
                     Log.e("LM" , "onTouchEvent--move-    " + (- (int) (ev.getY() - startY)));
                     scrollBy(0 , - (int) (ev.getY() - startY));
@@ -68,7 +71,7 @@ public class TouchCpordinatorLayout extends CoordinatorLayout {
                 break;
             case MotionEvent.ACTION_UP:
                 Log.e("LM" , "onTouchEvent--xia-    " + ev.getY());
-                if(ev.getY() > 100){
+                if(ev.getY() > 20 && isMove){
                     if(isOpened){
                         ValueAnimator v = ValueAnimator.ofInt((int)ev.getY() , 1500);
                         v.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
