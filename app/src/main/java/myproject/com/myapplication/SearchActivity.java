@@ -22,11 +22,10 @@ import android.widget.TextView;
 
 public class SearchActivity extends Activity {
     private RelativeLayout mSearchBGTxt;
-    private TextView locationTv , bottom;
+    private TextView bottom;
     private FrameLayout mContentFrame;
-    private ImageView mbackIv;
     private View frame_content_bg;
-    float searchBgHeight = 0;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +33,6 @@ public class SearchActivity extends Activity {
 
         mSearchBGTxt = (RelativeLayout) findViewById(R.id.tv_search_rlt);
         mContentFrame = (FrameLayout) findViewById(R.id.frame_content_bg);
-        locationTv = (TextView) findViewById(R.id.location_tv);
         bottom = (TextView) findViewById(R.id.bottom);
         frame_content_bg = findViewById(R.id.frame_content_bg);
 
@@ -47,13 +45,6 @@ public class SearchActivity extends Activity {
                 performEnterAnimation();
             }
         });
-//        mbackIv.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                onBackPressed();
-//            }
-//        });
-
     }
 
     private void performEnterAnimation() {
@@ -68,50 +59,25 @@ public class SearchActivity extends Activity {
 
         //放到前一个页面的位置
         mSearchBGTxt.setY(mSearchBGTxt.getY() + translateY);
-        final ValueAnimator translateVa = ValueAnimator.ofFloat(mSearchBGTxt.getY(), mSearchBGTxt.getY() - 100);
-        searchBgHeight = mSearchBGTxt.getY();
-        translateVa.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                //mSearchBGTxt.setY((Float) valueAnimator.getAnimatedValue());
-                //mbackIv.setY(mSearchBGTxt.getY() + (mSearchBGTxt.getHeight() - mbackIv.getHeight()) / 2);
-            }
-        });
-
-        ValueAnimator scaleVa = ValueAnimator.ofFloat(1, 0.8f);
-        scaleVa.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                //mSearchBGTxt.setScaleX((Float) valueAnimator.getAnimatedValue());
-            }
-        });
-
         ValueAnimator alphaVa = ValueAnimator.ofFloat(0, 1f);
         alphaVa.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 mContentFrame.setAlpha((Float) valueAnimator.getAnimatedValue());
-                //mbackIv.setAlpha((Float) valueAnimator.getAnimatedValue());
             }
         });
         ValueAnimator alphaVa2 = ValueAnimator.ofFloat(1f, 0);
         alphaVa2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                //locationTv.setAlpha((Float) valueAnimator.getAnimatedValue());
                 bottom.setAlpha((Float) valueAnimator.getAnimatedValue());
             }
         });
         alphaVa.setDuration(500);
         alphaVa2.setDuration(300);
-        translateVa.setDuration(500);
-        scaleVa.setDuration(500);
 
         alphaVa.start();
         alphaVa2.start();
-        translateVa.start();
-        scaleVa.start();
-
 
         ValueAnimator valueAnimator = ValueAnimator.ofInt(-1000 , 150);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -143,7 +109,6 @@ public class SearchActivity extends Activity {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 mSearchBGTxt.setY((Float) valueAnimator.getAnimatedValue());
-                //mbackIv.setY(mSearchBGTxt.getY() + (mSearchBGTxt.getHeight() - mbackIv.getHeight()) / 2);
             }
         });
         translateVa.addListener(new Animator.AnimatorListener() {
@@ -169,27 +134,17 @@ public class SearchActivity extends Activity {
             }
         });
 
-        ValueAnimator scaleVa = ValueAnimator.ofFloat(0.8f, 1f);
-        scaleVa.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                //mSearchBGTxt.setScaleX((Float) valueAnimator.getAnimatedValue());
-            }
-        });
-
         ValueAnimator alphaVa = ValueAnimator.ofFloat(1, 0f);
         alphaVa.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 mContentFrame.setAlpha((Float) valueAnimator.getAnimatedValue());
-                //mbackIv.setAlpha((Float) valueAnimator.getAnimatedValue());
             }
         });
         ValueAnimator alphaVa2 = ValueAnimator.ofFloat(0, 1f);
         alphaVa2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                //locationTv.setAlpha((Float) valueAnimator.getAnimatedValue());
                 bottom.setAlpha((Float) valueAnimator.getAnimatedValue());
             }
         });
@@ -197,12 +152,9 @@ public class SearchActivity extends Activity {
         alphaVa.setDuration(500);
         alphaVa2.setDuration(500);
         translateVa.setDuration(500);
-        scaleVa.setDuration(500);
         alphaVa.start();
         alphaVa2.start();
         translateVa.start();
-        scaleVa.start();
-
 
         ValueAnimator valueAnimator = ValueAnimator.ofInt(150 , -1000);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

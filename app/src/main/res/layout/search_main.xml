@@ -18,7 +18,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:text="北京市海淀区西二旗"
+            android:text="影院名称"
             android:textColor="#fff"
             android:textSize="18sp" />
 
@@ -38,12 +38,12 @@
                 android:textSize="13sp"
                 android:drawableLeft="#991122"
                 android:layout_centerVertical="true"
-                android:hint="搜索商家,商品名称"/>
+                android:hint="搜索名称"/>
         </RelativeLayout>
 
         <TextView
             android:textColor="#fff"
-            android:text="达美乐  呷谱  鲜芋仙  99炸鸡  麦当劳  肉夹馍"
+            android:text="3dmax vip"
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_marginLeft="15dp"
