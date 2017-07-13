@@ -19,6 +19,8 @@
         </activity>
         <activity android:name=".SubActivity"/>
         <activity android:name=".TouchActivity"/>
+        <activity android:name=".SearchMainActivity"/>
+        <activity android:name=".SearchActivity"/>
     </application>
 
 </manifest>

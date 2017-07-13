@@ -21,7 +21,8 @@ public class SubActivity extends Activity {
         text_title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SubActivity.this , TouchActivity.class));
+                //startActivity(new Intent(SubActivity.this , TouchActivity.class));
+                startActivity(new Intent(SubActivity.this , SearchMainActivity.class));
             }
         });
     }
