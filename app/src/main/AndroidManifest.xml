@@ -21,6 +21,15 @@
         <activity android:name=".TouchActivity"/>
         <activity android:name=".SearchMainActivity"/>
         <activity android:name=".SearchActivity"/>
+
+        <activity android:name=".expect.ExpectMainActivity"/>
+        <activity android:name=".expect.ScrollActivity"/>
+        <activity android:name=".expect.SampleActivity"/>
+        <activity android:name=".expect.RotationActivity"/>
+        <activity android:name=".expect.SetNowActivity"/>
+        <activity android:name=".expect.FlipActivity"/>
+        <activity android:name=".expect.AlphaActivity" />
+        <activity android:name=".expect.ConcatActivity" />
     </application>
 
 </manifest>

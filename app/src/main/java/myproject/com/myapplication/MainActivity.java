@@ -14,6 +14,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import myproject.com.myapplication.expect.ExpectMainActivity;
+
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private List<String> datas;
@@ -29,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(MainActivity.this , SubActivity.class));
+                //startActivity(new Intent(MainActivity.this , SubActivity.class));
+                startActivity(new Intent(MainActivity.this , ExpectMainActivity.class));
             }
         } , 2000);
     }
