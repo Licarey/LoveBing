@@ -1,0 +1,1 @@
+# LoveBing behavior用法
